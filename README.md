@@ -2,6 +2,12 @@
 
 ![Anthbot Genie logo](logo.png)
 
+## Disclaimer
+
+This is an unofficial, community project and is not affiliated with, endorsed by, sponsored by, or approved by Anthbot.
+
+All product names, logos, and trademarks are property of their respective owners. See [NOTICE.md](NOTICE.md).
+
 This repository now contains a first custom integration at:
 
 - `custom_components/anthbot_genie`
@@ -61,6 +67,15 @@ Entity attributes also include:
 3. Add integration: `Settings -> Devices & Services -> Add Integration -> Anthbot Genie`.
 4. In config, enter Anthbot `username`/`password`, select your country (area code dropdown).
 5. The rest (device discovery, region, IoT endpoint, shadow auth signing) is automatic.
+
+## Home Assistant Brands (integration tile icon)
+
+To show the icon/logo in Home Assistant's integration tile, a PR must be submitted to `home-assistant/brands`.
+
+Prepared assets are included in this repository at:
+
+- `brands/custom_integrations/anthbot_genie/icon.png`
+- `brands/custom_integrations/anthbot_genie/logo.png`
 
 ## Actions (services)
 

@@ -1,0 +1,129 @@
+start_full_mow:
+  name: Start Full Mow
+  description: Start mowing on selected Anthbot mower(s).
+  target:
+    entity:
+      integration: anthbot_genie
+  fields:
+    serial_number:
+      name: Serial number
+      description: Optional mower serial number or list of serial numbers.
+      example: "YOUR_MOWER_SERIAL"
+      selector:
+        text:
+
+stop_mow:
+  name: Stop Mow
+  description: Stop all current tasks on selected Anthbot mower(s).
+  target:
+    entity:
+      integration: anthbot_genie
+  fields:
+    serial_number:
+      name: Serial number
+      description: Optional mower serial number or list of serial numbers.
+      example: "YOUR_MOWER_SERIAL"
+      selector:
+        text:
+
+return_to_dock:
+  name: Return To Dock
+  description: Send selected Anthbot mower(s) back to the charging dock.
+  target:
+    entity:
+      integration: anthbot_genie
+  fields:
+    serial_number:
+      name: Serial number
+      description: Optional mower serial number or list of serial numbers.
+      example: "YOUR_MOWER_SERIAL"
+      selector:
+        text:
+
+set_mow_height:
+  name: Set Mow Height
+  description: Set cutting height on selected Anthbot mower(s).
+  target:
+    entity:
+      integration: anthbot_genie
+  fields:
+    mow_height:
+      name: Mow height
+      description: Cutting height in millimeters.
+      required: true
+      example: 50
+      selector:
+        select:
+          options:
+            - 30
+            - 35
+            - 40
+            - 45
+            - 50
+            - 55
+            - 60
+            - 65
+            - 70
+    serial_number:
+      name: Serial number
+      description: Optional mower serial number or list of serial numbers.
+      example: "YOUR_MOWER_SERIAL"
+      selector:
+        text:
+
+set_voice_volume:
+  name: Set Voice Volume
+  description: Set voice volume on selected Anthbot mower(s), from 0 to 100.
+  target:
+    entity:
+      integration: anthbot_genie
+  fields:
+    voice_volume:
+      name: Voice volume
+      description: Volume level from 0 to 100.
+      required: true
+      example: 50
+      selector:
+        number:
+          min: 0
+          max: 100
+          step: 1
+          mode: slider
+    serial_number:
+      name: Serial number
+      description: Optional mower serial number or list of serial numbers.
+      example: "YOUR_MOWER_SERIAL"
+      selector:
+        text:
+
+set_custom_mowing_direction:
+  name: Set Custom Mowing Direction
+  description: Set custom mowing direction and enable/disable the adaptive direction toggle.
+  target:
+    entity:
+      integration: anthbot_genie
+  fields:
+    mow_direction:
+      name: Mowing direction
+      description: Direction in degrees (0 to 180).
+      required: true
+      example: 147
+      selector:
+        number:
+          min: 0
+          max: 180
+          step: 1
+          mode: box
+    enable_custom_direction:
+      name: Enable custom direction
+      description: Enable or disable custom mowing direction.
+      required: false
+      default: true
+      selector:
+        boolean:
+    serial_number:
+      name: Serial number
+      description: Optional mower serial number or list of serial numbers.
+      example: "YOUR_MOWER_SERIAL"
+      selector:
+        text:

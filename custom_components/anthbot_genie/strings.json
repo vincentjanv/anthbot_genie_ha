@@ -1,0 +1,95 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Anthbot Genie",
+        "description": "Configure Anthbot account discovery and cloud shadow polling.",
+        "data": {
+          "name": "Name",
+          "username": "Email / username",
+          "password": "Password",
+          "api_host": "Anthbot API host",
+          "area_code": "Country",
+          "scan_interval": "Polling interval (seconds)"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "This Anthbot account is already configured."
+    },
+    "error": {
+      "cannot_connect": "Could not connect or authenticate with Anthbot cloud.",
+      "no_devices": "Login succeeded but no Anthbot devices were found in this account.",
+      "unknown": "Unexpected error."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "mower_status": {
+        "name": "Mower status"
+      },
+      "cutting_height": {
+        "name": "Cutting height"
+      },
+      "voice_volume": {
+        "name": "Voice volume"
+      },
+      "mowing_time": {
+        "name": "Mowing time (session)"
+      },
+      "mow_count": {
+        "name": "Mow count"
+      },
+      "custom_mowing_direction": {
+        "name": "Custom mowing direction"
+      },
+      "custom_mowing_direction_enabled": {
+        "name": "Custom mowing direction enabled"
+      },
+      "last_service_command_state": {
+        "name": "Last service command state"
+      },
+      "battery_level": {
+        "name": "Battery level"
+      }
+    },
+    "binary_sensor": {
+      "connection": {
+        "name": "Connection"
+      },
+      "charging": {
+        "name": "Charging"
+      },
+      "custom_mowing_direction_enabled": {
+        "name": "Custom mowing direction enabled"
+      }
+    },
+    "button": {
+      "start_full_mow": {
+        "name": "Start full mow"
+      },
+      "stop_mow": {
+        "name": "Stop mow"
+      },
+      "return_to_dock": {
+        "name": "Return to dock"
+      }
+    },
+    "number": {
+      "mow_height_setting": {
+        "name": "Mow height"
+      },
+      "voice_volume_setting": {
+        "name": "Voice volume"
+      },
+      "custom_mowing_direction_setting": {
+        "name": "Custom mowing direction"
+      }
+    },
+    "switch": {
+      "custom_mowing_direction_enabled": {
+        "name": "Custom mowing direction enabled"
+      }
+    }
+  }
+}

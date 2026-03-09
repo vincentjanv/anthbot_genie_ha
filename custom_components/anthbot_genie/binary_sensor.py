@@ -151,9 +151,9 @@ class AnthbotBinarySensorEntity(
             if isinstance(state.get("mowing_time_new"), dict)
             else None
         )
-        mow_count = (
-            state.get("param_set", {}).get("mow_count")
-            if isinstance(state.get("param_set"), dict)
+        mowing_area = (
+            state.get("mowing_area_new", {}).get("value")
+            if isinstance(state.get("mowing_area_new"), dict)
             else None
         )
         custom_mowing_direction = (
@@ -176,16 +176,13 @@ class AnthbotBinarySensorEntity(
             "serial_number": self.coordinator.client.serial_number,
             "cutting_height": cutting_height,
             "mowing_time": mowing_time,
-            "mow_count": mow_count,
+            "mowing_area": mowing_area,
             "custom_mowing_direction": custom_mowing_direction,
             "custom_mowing_direction_enabled": custom_mowing_direction_enabled,
             "voice_volume": voice_volume,
             "voice_status": voice_status,
             "last_service_command": (
                 service_reported.get("cmd") if service_reported else None
-            ),
-            "last_service_command_state": (
-                service_reported.get("state") if service_reported else None
             ),
             "last_service_command_generation": (
                 service_reported.get("generation") if service_reported else None

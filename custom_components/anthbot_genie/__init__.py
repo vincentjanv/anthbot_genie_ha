@@ -47,6 +47,8 @@ LEGACY_ENTITY_SUFFIXES: tuple[str, ...] = (
     "enable_custom_mowing_direction",
     "custom_mowing_direction_enable",
     "custom_mowing_direction_enabled_button",
+    "mow_count",
+    "last_service_command_state",
 )
 
 
@@ -263,10 +265,10 @@ async def _async_register_services(hass: HomeAssistant) -> None:
 def _async_cleanup_legacy_entities(
     hass: HomeAssistant, entry: ConfigEntry, serial_number: str
 ) -> None:
-    """Remove legacy entities superseded by switch/number entities."""
+    """Remove legacy entities superseded or removed by integration updates."""
     entity_registry = er.async_get(hass)
     for entry_reg in er.async_entries_for_config_entry(entity_registry, entry.entry_id):
-        if entry_reg.domain not in {"button", "binary_sensor"}:
+        if entry_reg.domain not in {"button", "binary_sensor", "sensor"}:
             continue
         unique_id = entry_reg.unique_id
         if not isinstance(unique_id, str):

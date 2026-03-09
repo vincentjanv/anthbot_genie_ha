@@ -37,17 +37,14 @@
       "mowing_time": {
         "name": "Mowing time (session)"
       },
-      "mow_count": {
-        "name": "Mow count"
+      "mowing_area": {
+        "name": "Mowing area (session)"
       },
       "custom_mowing_direction": {
         "name": "Custom mowing direction"
       },
       "custom_mowing_direction_enabled": {
         "name": "Custom mowing direction enabled"
-      },
-      "last_service_command_state": {
-        "name": "Last service command state"
       },
       "battery_level": {
         "name": "Battery level"

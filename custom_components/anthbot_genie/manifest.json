@@ -2,10 +2,10 @@
   "domain": "anthbot_genie",
   "name": "Anthbot Genie",
   "codeowners": [
-    "@vincentverbist"
+    "@vincentjanv"
   ],
   "config_flow": true,
-  "documentation": "https://github.com/vincentverbist/anthbot_ha",
+  "documentation": "https://github.com/vincentjanv/anthbot_genie_ha",
   "iot_class": "cloud_polling",
   "requirements": [],
   "version": "0.1.0"

@@ -13,7 +13,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE, UnitOfTime
+from homeassistant.const import PERCENTAGE, UnitOfArea, UnitOfTime
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -185,16 +185,6 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
         ),
     ),
     AnthbotSensorDescription(
-        key="last_service_command_state",
-        translation_key="last_service_command_state",
-        name="Last service command state",
-        value_fn=lambda data: (
-            data.get("_service_reported", {}).get("state")
-            if isinstance(data.get("_service_reported"), dict)
-            else None
-        ),
-    ),
-    AnthbotSensorDescription(
         key="mowing_time",
         translation_key="mowing_time",
         name="Mowing time (session)",
@@ -208,12 +198,15 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
         ),
     ),
     AnthbotSensorDescription(
-        key="mow_count",
-        translation_key="mow_count",
-        name="Mow count",
+        key="mowing_area",
+        translation_key="mowing_area",
+        name="Mowing area (session)",
+        native_unit_of_measurement=UnitOfArea.SQUARE_METERS,
+        device_class=SensorDeviceClass.AREA,
+        state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda data: (
-            data.get("param_set", {}).get("mow_count")
-            if isinstance(data.get("param_set"), dict)
+            data.get("mowing_area_new", {}).get("value")
+            if isinstance(data.get("mowing_area_new"), dict)
             else None
         ),
     ),
@@ -320,9 +313,9 @@ class AnthbotSensorEntity(
             if isinstance(state.get("mowing_time_new"), dict)
             else None
         )
-        mow_count = (
-            state.get("param_set", {}).get("mow_count")
-            if isinstance(state.get("param_set"), dict)
+        mowing_area = (
+            state.get("mowing_area_new", {}).get("value")
+            if isinstance(state.get("mowing_area_new"), dict)
             else None
         )
         custom_mowing_direction = (
@@ -349,16 +342,13 @@ class AnthbotSensorEntity(
             "robot_status_raw": robot_status_raw,
             "cutting_height": cutting_height,
             "mowing_time": mowing_time,
-            "mow_count": mow_count,
+            "mowing_area": mowing_area,
             "custom_mowing_direction": custom_mowing_direction,
             "custom_mowing_direction_enabled": custom_mowing_direction_enabled,
             "voice_volume": voice_volume,
             "voice_status": voice_status,
             "last_service_command": (
                 service_reported.get("cmd") if service_reported else None
-            ),
-            "last_service_command_state": (
-                service_reported.get("state") if service_reported else None
             ),
             "last_service_command_generation": (
                 service_reported.get("generation") if service_reported else None

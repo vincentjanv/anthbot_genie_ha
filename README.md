@@ -1,4 +1,4 @@
-# Anthbot Genie Home Assistant Integration (Phase 1)
+# Anthbot Genie Home Assistant Integration
 
 ![Anthbot Genie logo](logo.png)
 
@@ -14,7 +14,7 @@ This repository now contains a first custom integration at:
 
 ## What it does now
 
-It auto-discovers all account-bound mowers via:
+This integration has been tested with a Anthbot Genie 600, but most sensors/properties should work on other robots as well. It auto-discovers all account-bound mowers via:
 
 - `GET https://api.anthbot.com/api/v1/device/bind/list`
 
@@ -100,3 +100,7 @@ The integration also creates control entities on each mower device page:
 - Switch: `Custom mowing direction enabled`
 
 You can trigger/test commands directly from those entities in the device page.
+
+## Issues, discussions, ideas..?
+
+If you have any issues with this integration, feel free to open an issue in this repository. For discussions on improving this repository, please join the global Anthbot community on Facebook at https://www.facebook.com/groups/anthbotglobalcommunity of if you're living in the Nordics, at https://www.facebook.com/groups/anthbotnordicscommunity .

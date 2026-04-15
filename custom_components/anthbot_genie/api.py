@@ -396,6 +396,64 @@ class AnthbotCloudApiClient:
 
         return area_definition
 
+    async def async_get_device_path_data(self, serial_number: str) -> bytes:
+        """Fetch the mower history path file."""
+        self._require_token()
+
+        url = f"https://{self._host}/api/v1/device/v2/presigned_url"
+        params = {
+            "filename": f"path_{serial_number}.txt",
+            "sn": serial_number,
+            "category": "device",
+            "sub_category": "path",
+            "verification_token": self.build_verification_token(serial_number),
+        }
+
+        try:
+            async with self._session.get(
+                url,
+                headers=self._auth_headers,
+                params=params,
+                timeout=15,
+            ) as resp:
+                if resp.status != 200:
+                    body = await resp.text()
+                    raise AnthbotGenieApiError(
+                        f"Path presigned URL failed ({resp.status}): {body[:300]}"
+                    )
+                payload = await resp.json(content_type=None)
+        except ClientError as err:
+            raise AnthbotGenieApiError(f"Network error: {err}") from err
+        except TimeoutError as err:
+            raise AnthbotGenieApiError("Request timed out") from err
+
+        if not isinstance(payload, dict):
+            raise AnthbotGenieApiError("Invalid path presigned URL payload type")
+        if payload.get("code") != 0:
+            raise AnthbotGenieApiError(
+                f"Path presigned URL returned code={payload.get('code')}"
+            )
+
+        data = payload.get("data")
+        if not isinstance(data, dict):
+            raise AnthbotGenieApiError("Path presigned URL payload missing data object")
+        presigned_url = data.get("presigned_url")
+        if not isinstance(presigned_url, str) or not presigned_url:
+            raise AnthbotGenieApiError("Path presigned URL payload missing presigned_url")
+
+        try:
+            async with self._session.get(presigned_url, timeout=15) as resp:
+                if resp.status != 200:
+                    body = await resp.text()
+                    raise AnthbotGenieApiError(
+                        f"Path file download failed ({resp.status}): {body[:300]}"
+                    )
+                return await resp.read()
+        except ClientError as err:
+            raise AnthbotGenieApiError(f"Network error: {err}") from err
+        except TimeoutError as err:
+            raise AnthbotGenieApiError("Request timed out") from err
+
     async def async_get_device_presigned_region(self, serial_number: str) -> str | None:
         """Fetch presigned_url metadata and extract AWS region."""
         self._require_token()

@@ -31,6 +31,12 @@ It also fetches the mower area definition file from Anthbot cloud to discover:
 - manual zones
 - auto-zones
 
+It also generates per-device map camera entities in Home Assistant using:
+
+- manual zone geometry from the area file
+- auto-zone points from the area file
+- live/session path overlays from `curpath` and the cloud path export
+
 From `state.reported` it exposes:
 
 - `sensor.<device>_battery_level` from `elec`
@@ -73,6 +79,14 @@ For easier control, the integration also creates per-zone buttons on the mower d
 - `Auto zone <name>` for each auto-zone
 
 Each of those button entities exposes the zone-specific metadata as attributes and can be pressed directly from the device page.
+
+The integration also creates three generated map camera entities per mower:
+
+- `camera.<device>_session_map`
+- `camera.<device>_zones_map`
+- `camera.<device>_auto_zones_map`
+
+These are currently coordinate-based rendered maps. They do not yet use the app's binary base-map layer.
 
 ## Setup
 
@@ -141,6 +155,7 @@ The integration also creates control entities on each mower device page:
 - Buttons: `Start full mow`, `Stop mow`, `Return to dock`
 - Buttons: one `Zone <name>` per manual zone
 - Buttons: one `Auto zone <name>` per auto-zone
+- Cameras: `Session map`, `Zones map`, `Auto-zones map`
 - Number controls (sliders): `Mow height`, `Voice volume`
 - Number control (slider): `Custom mowing direction` (0..180)
 - Number control (slider): `Rain continue time` (0..8 hours)

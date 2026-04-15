@@ -45,7 +45,7 @@ from .const import (
 from .coordinator import AnthbotGenieDataUpdateCoordinator
 from .zones import auto_zones, manual_zones
 
-PLATFORMS = ["sensor", "binary_sensor", "button", "number", "switch"]
+PLATFORMS = ["sensor", "binary_sensor", "button", "number", "switch", "camera"]
 _LOGGER = logging.getLogger(__name__)
 VALID_MOW_HEIGHTS = list(range(30, 75, 5))
 LEGACY_ENTITY_SUFFIXES: tuple[str, ...] = (

@@ -99,6 +99,17 @@
       "rain_perception_enabled": {
         "name": "Rain perception"
       }
+    },
+    "camera": {
+      "session_map": {
+        "name": "Session map"
+      },
+      "zones_map": {
+        "name": "Zones map"
+      },
+      "auto_zones_map": {
+        "name": "Auto-zones map"
+      }
     }
   }
 }

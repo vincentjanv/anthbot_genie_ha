@@ -8,5 +8,5 @@
   "documentation": "https://github.com/vincentjanv/anthbot_genie_ha",
   "iot_class": "cloud_polling",
   "requirements": [],
-  "version": "0.7.6"
+  "version": "0.8.0"
 }

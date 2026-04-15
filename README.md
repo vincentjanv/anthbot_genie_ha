@@ -93,7 +93,7 @@ These are currently coordinate-based rendered maps. They do not yet use the app'
 ### HACS
 
 1. Open HACS -> Integrations -> top-right menu -> `Custom repositories`.
-2. Add repository URL: `https://github.com/vincentjanv/anthbot_ha`
+2. Add repository URL: `https://github.com/vincentjanv/anthbot_genie_ha`
 3. Category: `Integration`
 4. Install `Anthbot Genie` from HACS and restart Home Assistant.
 5. Add integration: `Settings -> Devices & Services -> Add Integration -> Anthbot Genie`.
@@ -164,6 +164,9 @@ The integration also creates control entities on each mower device page:
 - Sensors: `Zones`, `Auto zones` with zone ids/names summaries
 
 You can trigger/test commands directly from those entities in the device page.
+
+## Buy me some new blades!
+Feel free to make a contribution at https://buymeacoffee.com/vincentjanv if this integration helped you in any way...
 
 ## Issues, discussions, ideas..?
 

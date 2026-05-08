@@ -64,17 +64,26 @@ def custom_direction_enabled_from_state(data: dict[str, Any]) -> bool:
 
 def nest_mowing_enabled_from_state(data: dict[str, Any]) -> bool:
     """Return whether base-station mowing mode is enabled."""
-    return coerce_enabled_value(data.get("nest_switch"))
+    if data.get("nest_switch") is None:
+        return coerce_enabled_value(data.get("param_set").get("nest_switch"))
+    else:
+        return coerce_enabled_value(data.get("nest_switch"))
 
 
 def nest_visual_inspection_enabled_from_state(data: dict[str, Any]) -> bool:
     """Return whether base-station visual inspection is enabled."""
-    return coerce_enabled_value(data.get("nest_pobctl_switch"))
+    if data.get("nest_pobctl_switch") is None:
+        return coerce_enabled_value(data.get("nest_param_set").get("pobctl_switch"))
+    else:
+        return coerce_enabled_value(data.get("nest_pobctl_switch"))
 
 
 def nest_visual_inspection_level_from_state(data: dict[str, Any]) -> int | None:
     """Return the raw base-station visual inspection level."""
-    return raw_int_value(data.get("nest_pobctl_level"))
+    if data.get("nest_pobctl_level") is None:
+        return coerce_enabled_value(data.get("nest_param_set").get("pobctl_level"))
+    else:
+        return raw_int_value(data.get("nest_pobctl_level"))
 
 
 def nest_visual_inspection_option_from_state(data: dict[str, Any]) -> str | None:

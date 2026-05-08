@@ -36,13 +36,17 @@ def _is_connected(data: dict[str, Any]) -> bool:
         return online == "1"
     if isinstance(online, int):
         return online == 1
+    if isinstance(online, dict):
+        return online.get("value") == 1
     return False
 
 
 def _is_charging(data: dict[str, Any]) -> bool:
     robot_sta = data.get("robot_sta")
     if not isinstance(robot_sta, dict):
-        return False
+        robot_sta = data.get("mode")
+        if not isinstance(robot_sta, dict):
+            return False
     value = robot_sta.get("value")
     if not isinstance(value, str):
         return False

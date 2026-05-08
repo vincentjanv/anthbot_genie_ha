@@ -84,7 +84,9 @@ def _raw_robot_status(data: dict[str, Any]) -> str | None:
     """Return raw robot status from shadow payload."""
     robot_sta = data.get("robot_sta")
     if not isinstance(robot_sta, dict):
-        return None
+        robot_sta = data.get("mode")
+        if not isinstance(robot_sta, dict):
+            return None
     value = robot_sta.get("value")
     if isinstance(value, str):
         return value.lower()
@@ -163,7 +165,15 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
         name="Voice volume",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda data: data.get("volume"),
+        value_fn=lambda data: (
+            data.get("volume")
+            if isinstance(data.get("volume"), int)
+            else (
+                data.get("device_config").get("volume")
+                if isinstance(data.get("device_config"), dict)
+                else None
+            )
+        ),
     ),
     AnthbotSensorDescription(
         key="cutting_height",
@@ -191,7 +201,11 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
         value_fn=lambda data: (
             data.get("mowing_time_new", {}).get("value")
             if isinstance(data.get("mowing_time_new"), dict)
-            else None
+            else (
+                data.get("mowing_time", {}).get('value')
+                if isinstance(data.get("mowing_time"), dict)
+                else None
+            )
         ),
     ),
     AnthbotSensorDescription(
@@ -204,7 +218,11 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
         value_fn=lambda data: (
             data.get("mowing_area_new", {}).get("value")
             if isinstance(data.get("mowing_area_new"), dict)
-            else None
+            else (
+                data.get("mowing_area", {}).get('value')
+                if isinstance(data.get("mowing_area"), dict)
+                else None
+            )
         ),
     ),
     AnthbotSensorDescription(
@@ -248,7 +266,11 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.BATTERY,
         state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda data: data.get("elec"),
+        value_fn=lambda data: (
+            data.get("elec", {}).get("value")
+            if isinstance(data.get("elec"), dict)
+            else data.get("elec")
+        ),
     ),
 )
 

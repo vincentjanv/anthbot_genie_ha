@@ -99,7 +99,10 @@ class AnthbotSwitchEntity(
         """Return current switch value."""
         state = self.coordinator.reported_state
         if self.entity_description.key == "rain_perception_enabled":
-            return coerce_enabled_value(state.get("rain_switch"))
+            if state.get("rain_switch") is None:
+                return coerce_enabled_value(state.get("device_config").get("rain_switch"))
+            else:
+                return coerce_enabled_value(state.get("rain_switch"))
         if self.entity_description.key == "base_station_mowing_enabled":
             return nest_mowing_enabled_from_state(state)
         if self.entity_description.key == "base_station_visual_inspection_enabled":

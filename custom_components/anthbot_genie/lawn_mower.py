@@ -69,7 +69,9 @@ def _raw_robot_status(data: dict[str, Any]) -> str | None:
     """Return raw robot status from shadow payload."""
     robot_sta = data.get("robot_sta")
     if not isinstance(robot_sta, dict):
-        return None
+        robot_sta = data.get("mode")
+        if not isinstance(robot_sta, dict):
+            return None
     value = robot_sta.get("value")
     if isinstance(value, str):
         return value.lower()

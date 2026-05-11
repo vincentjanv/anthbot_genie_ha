@@ -59,7 +59,15 @@ NUMBERS: tuple[AnthbotNumberDescription, ...] = (
         native_step=1,
         native_unit_of_measurement=PERCENTAGE,
         mode=NumberMode.SLIDER,
-        getter=lambda data: data.get("volume"),
+        getter=lambda data: (
+            data.get("volume")
+            if isinstance(data.get("volume"), int)
+            else (
+                data.get("device_config").get("volume")
+                if isinstance(data.get("device_config"), dict)
+                else None
+            )
+        ),
     ),
     AnthbotNumberDescription(
         key="custom_mowing_direction_setting",
@@ -88,7 +96,11 @@ NUMBERS: tuple[AnthbotNumberDescription, ...] = (
         getter=lambda data: (
             data.get("rain_continue_time") / 3600
             if isinstance(data.get("rain_continue_time"), (int, float))
-            else None
+            else (
+                data.get("device_config").get("rain_continue_time") / 3600
+                if isinstance(data.get("device_config"), dict)
+                else None
+            )
         ),
     ),
     AnthbotNumberDescription(
@@ -99,7 +111,15 @@ NUMBERS: tuple[AnthbotNumberDescription, ...] = (
         native_max_value=2,
         native_step=1,
         mode=NumberMode.SLIDER,
-        getter=lambda data: data.get("nest_mow_count"),
+        getter=lambda data: (
+            data.get("nest_mow_count")
+            if isinstance("nest_mow_count", int)
+            else (
+               data.get("nest_param_set").get("mow_count")
+               if isinstance(data.get("nest_param_set"), dict)
+               else None
+            )
+        ),
     ),
     AnthbotNumberDescription(
         key="base_station_mow_height_setting",
@@ -110,7 +130,15 @@ NUMBERS: tuple[AnthbotNumberDescription, ...] = (
         native_step=5,
         native_unit_of_measurement="mm",
         mode=NumberMode.SLIDER,
-        getter=lambda data: data.get("nest_cutter_height"),
+        getter=lambda data: (
+            data.get("nest_cutter_height")
+            if isinstance(data.get("nest_cutter_height"), (int, float))
+            else (
+                data.get("nest_param_set").get("cutter_height")
+                if isinstance(data.get("nest_param_set"), dict)
+                else None
+            )  
+        ),
     ),
 )
 

@@ -51,6 +51,18 @@ class AnthbotGenieDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         """Fetch the latest state from the cloud endpoint."""
         try:
             await self.client.async_ensure_temporary_credentials(self.account_client)
+            # Keep the device's real-time stream alive. The mower only streams
+            # live telemetry (pose/curpath) to the cloud shadow while a client
+            # signals an active app session; it stops roughly 60 s after the
+            # last signal. Re-sending it every poll keeps pose/curpath fresh in
+            # HA without the phone app open. Best-effort: never fail the update
+            # if the keep-alive command does not go through.
+            try:
+                await self.client.async_publish_service_command(
+                    cmd="app_state", data=1
+                )
+            except AnthbotGenieApiError as err:
+                self.logger.debug("Real-time keep-alive (app_state) failed: %s", err)
             property_state = await self.client.async_get_shadow_reported_state()
             try:
                 service_state = await self.client.async_get_service_reported_state()

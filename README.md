@@ -45,12 +45,12 @@ From `state.reported` it exposes:
 - `sensor.<device>_custom_mowing_direction` from `param_set.mow_head`
 - `sensor.<device>_custom_mowing_direction_enabled` from `param_set.enable_adaptive_head` (mapped to enabled/disabled)
 - `sensor.<device>_mode` from `mode.value` (M5/M9)
-- `sensor.<device>_error_code` from `error.value` (M5/M9)
-- `sensor.<device>_ip_address` from `net_config.ip` (M5/M9)
-- `sensor.<device>_wifi_ssid` from `net_config.ssid` (M5/M9)
-- `sensor.<device>_rtk_state` from `rtk.state` (M5/M9)
-- `sensor.<device>_map_area` from `map.map_area` (M5/M9)
-- `sensor.<device>_mapping_task_state` from `mapping_task.state` (M5/M9)
+- `sensor.<device>_error_code` from `err_code`
+- `sensor.<device>_ip_address` from `sta_ip_addr`
+- `sensor.<device>_wifi_ssid` from `sta_ssid`
+- `sensor.<device>_rtk_state` from `rtk_state`
+- `sensor.<device>_map_area` from `map_area`
+- `sensor.<device>_mapping_task_state` from `map_sta.value`
 - `sensor.<device>_zones` for discovered manual zones
 - `sensor.<device>_auto_zones` for discovered auto-zones
 - `binary_sensor.<device>_connection` from `online`

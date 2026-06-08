@@ -99,6 +99,9 @@
       },
       "mow_count": {
         "name": "Mow count"
+      },
+      "position": {
+        "name": "Position"
       }
     },
     "binary_sensor": {

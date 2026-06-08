@@ -53,6 +53,7 @@ From `state.reported` it exposes:
 - `sensor.<device>_mapping_task_state` from `mapping_task.state` (M5/M9)
 - `sensor.<device>_zones` for discovered manual zones
 - `sensor.<device>_auto_zones` for discovered auto-zones
+- `sensor.<device>_position` from `pose` (live position; `x`/`y` attributes are in millimetres, in the same coordinate frame as zone `vertexs`, plus a `heading` attribute in degrees)
 - `binary_sensor.<device>_connection` from `online`
 - `binary_sensor.<device>_charging` from `robot_sta.value` or `mode.value`
 - `switch.<device>_custom_mowing_direction_enabled` to toggle `param_set.enable_adaptive_head`

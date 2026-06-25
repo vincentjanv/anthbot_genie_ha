@@ -168,6 +168,35 @@ def _general_mower_status(data: dict[str, Any]) -> str:
     return "unknown"
 
 
+def _pose(data: dict[str, Any]) -> dict[str, Any] | None:
+    """Return the live pose dict (x/y in millimetres, same frame as zone vertexs)."""
+    pose = data.get("pose")
+    return pose if isinstance(pose, dict) else None
+
+
+def _position_summary(data: dict[str, Any]) -> str | None:
+    """Return the live position as an 'x, y' string in millimetres."""
+    pose = _pose(data)
+    if pose is None:
+        return None
+    x = pose.get("x")
+    y = pose.get("y")
+    if not isinstance(x, (int, float)) or not isinstance(y, (int, float)):
+        return None
+    return f"{x}, {y}"
+
+
+def _heading_degrees(data: dict[str, Any]) -> float | None:
+    """Return mower heading in degrees [0, 360) derived from pose.yaw."""
+    pose = _pose(data)
+    if pose is None:
+        return None
+    yaw = pose.get("yaw")
+    if not isinstance(yaw, (int, float)):
+        return None
+    return round(yaw % 360, 1)
+
+
 @dataclass(frozen=True, kw_only=True)
 class AnthbotSensorDescription(SensorEntityDescription):
     """Describes an Anthbot sensor entity."""
@@ -447,6 +476,13 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
             else None
         ),
     ),
+    AnthbotSensorDescription(
+        key="position",
+        translation_key="position",
+        name="Position",
+        icon="mdi:crosshairs-gps",
+        value_fn=_position_summary,
+    ),
 )
 
 
@@ -460,6 +496,7 @@ def _sensor_path_for_description(description: AnthbotSensorDescription) -> list[
         "ota_progress": ["ota_status", "progress"],
         "firmware_version": ["fw_version", "system_version"],
         "mow_count": ["param_set", "mow_count"],
+        "position": ["pose", "x"],
         "mode": ["mode", "value"],
         "error_code": ["error", "value"],
         "ip_address": ["net_config", "ip"],
@@ -672,4 +709,10 @@ class AnthbotSensorEntity(
                 for zone in auto_zone_list
                 if isinstance((zone_name := zone.get("name")), str) and zone_name
             ]
+        if self.entity_description.key == "position":
+            pose = _pose(state) or {}
+            attributes["x"] = pose.get("x")
+            attributes["y"] = pose.get("y")
+            attributes["heading"] = _heading_degrees(state)
+            attributes["yaw_raw"] = pose.get("yaw")
         return attributes

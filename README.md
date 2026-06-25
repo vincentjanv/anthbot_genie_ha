@@ -14,7 +14,7 @@ This repository contains a custom integration for Anthbot robotic mowers:
 
 ## What it does now
 
-This integration supports the Anthbot Genie 600, M5, and M9 models. It auto-discovers all account-bound mowers via:
+This integration supports the Anthbot Genie 600, Genie 1000, M5, and M9 models. It auto-discovers all account-bound mowers via:
 
 - `GET https://api.anthbot.com/api/v1/device/bind/list`
 

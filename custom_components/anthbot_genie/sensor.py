@@ -325,31 +325,19 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
         key="error_code",
         translation_key="error_code",
         name="Error code",
-        value_fn=lambda data: (
-            data.get("error", {}).get("value")
-            if isinstance(data.get("error"), dict)
-            else None
-        ),
+        value_fn=lambda data: data.get("err_code"),
     ),
     AnthbotSensorDescription(
         key="ip_address",
         translation_key="ip_address",
         name="IP address",
-        value_fn=lambda data: (
-            data.get("net_config", {}).get("ip")
-            if isinstance(data.get("net_config"), dict)
-            else None
-        ),
+        value_fn=lambda data: data.get("sta_ip_addr"),
     ),
     AnthbotSensorDescription(
         key="wifi_ssid",
         translation_key="wifi_ssid",
         name="WiFi SSID",
-        value_fn=lambda data: (
-            data.get("net_config", {}).get("ssid")
-            if isinstance(data.get("net_config"), dict)
-            else None
-        ),
+        value_fn=lambda data: data.get("sta_ssid"),
     ),
     AnthbotSensorDescription(
         key="mowing_area_total",
@@ -382,9 +370,7 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
         translation_key="rtk_state",
         name="RTK state",
         value_fn=lambda data: (
-            str(data.get("rtk", {}).get("state"))
-            if isinstance(data.get("rtk"), dict) and data.get("rtk", {}).get("state") is not None
-            else None
+            str(data.get("rtk_state")) if data.get("rtk_state") is not None else None
         ),
     ),
     AnthbotSensorDescription(
@@ -394,19 +380,15 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
         native_unit_of_measurement=UnitOfArea.SQUARE_METERS,
         device_class=SensorDeviceClass.AREA,
         state_class=SensorStateClass.MEASUREMENT,
-        value_fn=lambda data: (
-            data.get("map", {}).get("map_area")
-            if isinstance(data.get("map"), dict)
-            else None
-        ),
+        value_fn=lambda data: data.get("map_area"),
     ),
     AnthbotSensorDescription(
         key="mapping_task_state",
         translation_key="mapping_task_state",
         name="Mapping task state",
         value_fn=lambda data: (
-            str(data.get("mapping_task", {}).get("state"))
-            if isinstance(data.get("mapping_task"), dict) and data.get("mapping_task", {}).get("state") is not None
+            data.get("map_sta", {}).get("value")
+            if isinstance(data.get("map_sta"), dict)
             else None
         ),
     ),
@@ -427,18 +409,14 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
         key="sim_id",
         translation_key="sim_id",
         name="SIM ID",
-        value_fn=lambda data: (
-            data.get("net_config", {}).get("4g_ccid")
-            if isinstance(data.get("net_config"), dict)
-            else None
-        ),
+        value_fn=lambda data: data.get("4g_ccid"),
     ),
     AnthbotSensorDescription(
         key="ota_status",
         translation_key="ota_status",
         name="OTA status",
         value_fn=lambda data: (
-            data.get("ota_status", {}).get("states")
+            data.get("ota_status", {}).get("ota_state")
             if isinstance(data.get("ota_status"), dict)
             else None
         ),
@@ -450,7 +428,7 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda data: (
-            data.get("ota_status", {}).get("progress")
+            data.get("ota_status", {}).get("ota_progress")
             if isinstance(data.get("ota_status"), dict)
             else None
         ),
@@ -491,21 +469,21 @@ def _sensor_path_for_description(description: AnthbotSensorDescription) -> list[
     # Map sensor keys to their data paths for conditional creation
     path_map: dict[str, list[str]] = {
         "volume": ["device_config", "volume"],
-        "sim_id": ["net_config", "4g_ccid"],
-        "ota_status": ["ota_status", "states"],
-        "ota_progress": ["ota_status", "progress"],
+        "sim_id": ["4g_ccid"],
+        "ota_status": ["ota_status", "ota_state"],
+        "ota_progress": ["ota_status", "ota_progress"],
         "firmware_version": ["fw_version", "system_version"],
         "mow_count": ["param_set", "mow_count"],
         "position": ["pose", "x"],
         "mode": ["mode", "value"],
-        "error_code": ["error", "value"],
-        "ip_address": ["net_config", "ip"],
-        "wifi_ssid": ["net_config", "ssid"],
+        "error_code": ["err_code"],
+        "ip_address": ["sta_ip_addr"],
+        "wifi_ssid": ["sta_ssid"],
         "mowing_area_total": ["mowing_area", "value"],
         "mowing_time_total": ["mowing_time", "value"],
-        "rtk_state": ["rtk", "state"],
-        "map_area": ["map", "map_area"],
-        "mapping_task_state": ["mapping_task", "state"],
+        "rtk_state": ["rtk_state"],
+        "map_area": ["map_area"],
+        "mapping_task_state": ["map_sta", "value"],
     }
     return path_map.get(description.key)
 
@@ -653,34 +631,14 @@ class AnthbotSensorEntity(
                 if isinstance(state.get("mode"), dict)
                 else None
             ),
-            "error_code": (
-                state.get("error", {}).get("value")
-                if isinstance(state.get("error"), dict)
-                else None
-            ),
-            "ip_address": (
-                state.get("net_config", {}).get("ip")
-                if isinstance(state.get("net_config"), dict)
-                else None
-            ),
-            "wifi_ssid": (
-                state.get("net_config", {}).get("ssid")
-                if isinstance(state.get("net_config"), dict)
-                else None
-            ),
-            "rtk_state": (
-                state.get("rtk", {}).get("state")
-                if isinstance(state.get("rtk"), dict)
-                else None
-            ),
-            "map_area": (
-                state.get("map", {}).get("map_area")
-                if isinstance(state.get("map"), dict)
-                else None
-            ),
+            "error_code": state.get("err_code"),
+            "ip_address": state.get("sta_ip_addr"),
+            "wifi_ssid": state.get("sta_ssid"),
+            "rtk_state": state.get("rtk_state"),
+            "map_area": state.get("map_area"),
             "mapping_task_state": (
-                state.get("mapping_task", {}).get("state")
-                if isinstance(state.get("mapping_task"), dict)
+                state.get("map_sta", {}).get("value")
+                if isinstance(state.get("map_sta"), dict)
                 else None
             ),
         }

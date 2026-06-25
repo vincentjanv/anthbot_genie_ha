@@ -78,48 +78,28 @@ def _is_custom_mowing_direction_enabled(data: dict[str, Any]) -> bool:
 
 
 def _is_rain_sensor_active(data: dict[str, Any]) -> bool:
-    """Check if rain sensor is active."""
-    device_config = data.get("device_config")
-    if isinstance(device_config, dict):
-        value = device_config.get("rain_switch")
-        return value in (1, "1", True, "true")
-    return False
+    """Check if rain perception is active."""
+    return data.get("rain_switch") in (1, "1", True, "true")
 
 
 def _is_camera_active(data: dict[str, Any]) -> bool:
     """Check if camera is active."""
-    device_config = data.get("device_config")
-    if isinstance(device_config, dict):
-        value = device_config.get("camera_switch")
-        return value in (1, "1", True, "true")
-    return False
+    return data.get("camera_switch") in (1, "1", True, "true")
 
 
 def _is_anti_theft_active(data: dict[str, Any]) -> bool:
-    """Check if anti-theft protection is active."""
-    device_config = data.get("device_config")
-    if isinstance(device_config, dict):
-        value = device_config.get("anti_loss_switch")
-        return value in (1, "1", True, "true")
-    return False
+    """Check if anti-theft (anti-loss) protection is active."""
+    return data.get("anti_loss_switch") in (1, "1", True, "true")
 
 
 def _is_wifi_connected(data: dict[str, Any]) -> bool:
     """Check if WiFi is connected."""
-    net_state = data.get("net_state")
-    if isinstance(net_state, dict):
-        value = net_state.get("wifi_state")
-        return value in (1, "1", True, "true")
-    return False
+    return data.get("wifi_state") in (1, "1", True, "true")
 
 
 def _is_4g_connected(data: dict[str, Any]) -> bool:
     """Check if 4G is connected."""
-    net_state = data.get("net_state")
-    if isinstance(net_state, dict):
-        value = net_state.get("4g_state")
-        return value in (1, "1", True, "true")
-    return False
+    return data.get("4g_state") in (1, "1", True, "true")
 
 
 def _is_adaptive_head_enabled(data: dict[str, Any]) -> bool:
@@ -202,11 +182,11 @@ def _binary_sensor_path_for_description(description: AnthbotBinarySensorDescript
     """Return the data path for a binary sensor description, if it has one."""
     # Map binary sensor keys to their data paths for conditional creation
     path_map: dict[str, list[str]] = {
-        "rain_sensor": ["device_config", "rain_switch"],
-        "camera": ["device_config", "camera_switch"],
-        "anti_theft": ["device_config", "anti_loss_switch"],
-        "wifi_connected": ["net_state", "wifi_state"],
-        "mobile_connected": ["net_state", "4g_state"],
+        "rain_sensor": ["rain_switch"],
+        "camera": ["camera_switch"],
+        "anti_theft": ["anti_loss_switch"],
+        "wifi_connected": ["wifi_state"],
+        "mobile_connected": ["4g_state"],
         "adaptive_head_enabled": ["param_set", "enable_adaptive_head"],
     }
     return path_map.get(description.key)

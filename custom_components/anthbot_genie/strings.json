@@ -102,6 +102,9 @@
       },
       "position": {
         "name": "Position"
+      },
+      "coverage_trail": {
+        "name": "Coverage trail"
       }
     },
     "binary_sensor": {

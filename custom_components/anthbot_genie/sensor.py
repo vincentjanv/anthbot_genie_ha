@@ -461,6 +461,13 @@ SENSORS: tuple[AnthbotSensorDescription, ...] = (
         icon="mdi:crosshairs-gps",
         value_fn=_position_summary,
     ),
+    AnthbotSensorDescription(
+        key="coverage_trail",
+        translation_key="coverage_trail",
+        name="Coverage trail",
+        icon="mdi:map-marker-path",
+        value_fn=lambda data: len(data.get("_coverage_trail") or []) or None,
+    ),
 )
 
 
@@ -475,6 +482,7 @@ def _sensor_path_for_description(description: AnthbotSensorDescription) -> list[
         "firmware_version": ["fw_version", "system_version"],
         "mow_count": ["param_set", "mow_count"],
         "position": ["pose", "x"],
+        "coverage_trail": ["curpath"],
         "mode": ["mode", "value"],
         "error_code": ["err_code"],
         "ip_address": ["sta_ip_addr"],
@@ -673,4 +681,8 @@ class AnthbotSensorEntity(
             attributes["y"] = pose.get("y")
             attributes["heading"] = _heading_degrees(state)
             attributes["yaw_raw"] = pose.get("yaw")
+        if self.entity_description.key == "coverage_trail":
+            points = state.get("_coverage_trail") or []
+            attributes["points"] = points
+            attributes["point_count"] = len(points)
         return attributes

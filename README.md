@@ -54,6 +54,7 @@ From `state.reported` it exposes:
 - `sensor.<device>_zones` for discovered manual zones
 - `sensor.<device>_auto_zones` for discovered auto-zones
 - `sensor.<device>_position` from `pose` (live position; `x`/`y` attributes are in millimetres, in the same coordinate frame as zone `vertexs`, plus a `heading` attribute in degrees)
+- `sensor.<device>_coverage_trail` built from the `curpath` blob, which only carries a rolling ~1 m window of recent path in centimetres. The integration scales it to millimetres and accumulates the points across polls into a growing trail (reset when a new mowing session starts or the mower docks). The state is the accumulated point count and the `points` attribute is the list of `[x, y]` millimetre coordinates (same frame as zone `vertexs`)
 - `binary_sensor.<device>_connection` from `online`
 - `binary_sensor.<device>_charging` from `robot_sta.value` or `mode.value`
 - `switch.<device>_custom_mowing_direction_enabled` to toggle `param_set.enable_adaptive_head`

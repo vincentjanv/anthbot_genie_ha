@@ -26,6 +26,12 @@ Then it polls the AWS IoT device shadow endpoint per discovered `sn` using autom
 
 - `GET https://<iot_endpoint>/things/<sn>/shadow?name=property`
 
+On every poll the integration also sends an `app_state` keep-alive command. The
+mower only streams live telemetry (such as live position and path) to the cloud
+shadow while a client signals an active app session, and stops roughly 60 seconds
+after the last signal. Re-sending it each poll keeps that data fresh in Home
+Assistant without the phone app being open.
+
 It also fetches the mower area definition file from Anthbot cloud to discover:
 
 - manual zones

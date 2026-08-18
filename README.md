@@ -1,5 +1,5 @@
 # Warning: no longer maintained!
-Please by informed, I will no longer be updating this integration. This project has been superseeded by the great efforts at https://github.com/Mqbretrofit/ha-anthbot-map, which is already much more elaborate. I am happy to have kicked off this initial development and get things going for the community. So please migrate to https://github.com/Mqbretrofit/ha-anthbot-map .
+Please by informed, I will no longer be updating this integration. This project has been superseeded by the great efforts at [https://github.com/Mqbretrofit/ha-anthbot-map](https://github.com/Mqbretrofit/ha-anthbot-map-v2), which is already much more elaborate. I am happy to have kicked off this initial development and get things going for the community. So please migrate to [https://github.com/Mqbretrofit/ha-anthbot-map](https://github.com/Mqbretrofit/ha-anthbot-map-v2) .
 
 # Anthbot HA Home Assistant Integration
 
